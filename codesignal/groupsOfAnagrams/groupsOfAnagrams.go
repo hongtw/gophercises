@@ -88,22 +88,37 @@ func groupsOfAnagramsV3(words []string) int {
 	return len(rec)
 }
 
-// func groupsOfAnagramsV2(words []string) int {
-// 	cache := make(map[string]empty)
-// 	rec := make(map[string]empty)
-// 	for _, word := range words {
-// 		if _, ok := cache[word]; ok {
-// 			continue
-// 		}
-// 		cache[word] = keyExists
+func groupsOfAnagramsV4(words []string) int {
+	var wg sync.WaitGroup
+	cache := make(map[string]empty)
+	rec := make(map[string]empty)
+	keys := make(chan string, 10000)
+	done := make(chan bool)
 
-// 		values := big.NewInt(0)
-// 		for _, char := range word {
-// 			base := big.NewInt(10)
-// 			exp := big.NewInt(int64(char - 'a'))
-// 			values.Add(values, base.Exp(base, exp, nil))
-// 			}
-// 		rec[values.String()] = keyExists
-// 	}
-// 	return len(rec)
-// }
+	for _, word := range words {
+		if _, ok := cache[word]; ok {
+			continue
+		}
+		wg.Add(1)
+		cache[word] = keyExists
+
+		go func(w string) {
+			defer wg.Done()
+			keys <- sortString(w)
+		}(word)
+	}
+	go func() {
+		for {
+			key, ok := <-keys
+			if !ok {
+				break
+			}
+			rec[key] = keyExists
+		}
+		done <- true
+	}()
+	wg.Wait()
+	close(keys)
+	<-done
+	return len(rec)
+}

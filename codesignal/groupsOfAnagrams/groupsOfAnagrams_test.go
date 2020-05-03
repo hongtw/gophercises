@@ -79,6 +79,17 @@ func BenchmarkV3(gb *testing.B) {
 	}
 }
 
+func BenchmarkV4(gb *testing.B) {
+	for i := 0; i < gb.N; i++ {
+		for _, value := range tests {
+			groupsOfAnagramsV4(value.v)
+		}
+		for _, value := range benchmarkSamples {
+			groupsOfAnagramsV4(value)
+		}
+	}
+}
+
 func Test_arrayPacking(t *testing.T) {
 
 	for i, test := range tests {
