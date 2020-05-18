@@ -68,6 +68,17 @@ func BenchmarkV2(gb *testing.B) {
 	}
 }
 
+func BenchmarkMaxVersion(gb *testing.B) {
+	for i := 0; i < gb.N; i++ {
+		for _, value := range tests {
+			groupsOfAnagramsMaxVersion(value.v)
+		}
+		for _, value := range benchmarkSamples {
+			groupsOfAnagramsMaxVersion(value)
+		}
+	}
+}
+
 func BenchmarkV3(gb *testing.B) {
 	for i := 0; i < gb.N; i++ {
 		for _, value := range tests {

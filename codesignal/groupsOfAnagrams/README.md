@@ -1,3 +1,7 @@
+[Codesignal - groupsOfAnagrams](https://app.codesignal.com/challenge/BE3XTXiPEbHSin2oQ)
+
+---
+
 ## Benchmark notes
 ```
 $ ../bench.sh 
